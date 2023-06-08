@@ -25,6 +25,7 @@ public class Proyecto extends JFrame implements Runnable{
             {-5, -5, -5, -5,  0,  0,  0,  0},
             { 1,  1,  1,  1,  1,  1,  1,  1}
     };
+
     public Proyecto () {
         setSize(400, 700);
         setTitle("Crossy Road");
@@ -32,7 +33,7 @@ public class Proyecto extends JFrame implements Runnable{
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        bufferFondo = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
+        bufferFondo = new BufferedImage(400, 700, BufferedImage.TYPE_INT_RGB);
         bufferPixel = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferFondo.createGraphics();
 
