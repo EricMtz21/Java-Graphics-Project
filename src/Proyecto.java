@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Stack;
+import java.util.Arrays;
 
 public class Proyecto extends JFrame implements Runnable{
     private BufferedImage bufferFondo, bufferPixel;
@@ -11,23 +11,36 @@ public class Proyecto extends JFrame implements Runnable{
     // VARIABLES
     int[] vDireccion = {-2, 2, 5};
     private boolean isRunning = true;
+    int xDistance = 1;
+    int yDistance = 1;
+    double scaleValue = 1.01;
+    float timeElapsed = 0;
+    int scaleTimer = 1;
 
     // FIguras
-    private double[][] pollo = {
-            {20, 60, 60, 20, 20,   60,  60,  20, 20, 20, 60, 60},
-            {40, 40, 40, 40, 120, 120, 120, 120, 70, 70, 70, 70},
-            { 0,  0, 60, 60, 20,   20,  60,  60, 20,  0, 0, 20},
-            { 1,  1,  1,  1,  1,    1,   1,  1,   1,  1, 1,  1}
-    };
-    private double[][] colita = {
-            {30, 50, 50, 30, 30, 50, 50, 30},
-            {50, 50, 70, 70, 50, 50, 70, 70},
-            {-5, -5, -5, -5,  0,  0,  0,  0},
+    private double[][] cube = {
+            {20, 60, 60, 20, 20, 60, 60, 20},
+            {40, 40, 40, 40, 70, 70, 70, 70},
+            { 0,  0, 60, 60, 0, 0, 60, 60},
             { 1,  1,  1,  1,  1,  1,  1,  1}
     };
+    private double[][] cube2 = {
+            {120, 70, 70, 120, 120, 70, 70, 120},
+            {40, 40, 40, 40, 70, 70, 70, 70},
+            { 0,  0, 60, 60, 0, 0, 60, 60},
+            { 1,  1,  1,  1,  1,  1,  1,  1}
+    };
+    private double[][] cube3 = {
+            {20, 60, 60, 20, 20, 60, 60, 20},
+            {40, 40, 40, 40, 70, 70, 70, 70},
+            { 0,  0, 60, 60, 0, 0, 60, 60},
+            { 1,  1,  1,  1,  1,  1,  1,  1}
+    };
+    private double[][] auxCube = { };
+
     public Proyecto () {
-        setSize(400, 700);
-        setTitle("Crossy Road");
+        setSize(800, 800);
+        setTitle("Universe");
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -48,6 +61,7 @@ public class Proyecto extends JFrame implements Runnable{
         while (isRunning) {
             try {
                 thread.sleep(16);
+                timeElapsed += 16;
                 repaint();
             } catch (Exception e) {
                 System.out.println();
@@ -58,62 +72,122 @@ public class Proyecto extends JFrame implements Runnable{
     public void paint(Graphics g) {
         super.paint(graphics);
 
-        drawChicken();
-        rotarX(pollo, 1);
-        rotarY(pollo, 1);
-        rotarZ(pollo, 1);
-        rotarX(colita, 1);
-        rotarY(colita, 1);
-        rotarZ(colita, 1);
+        drawOrthogonal(cube3, Color.CYAN);
+        rotateX(cube3, 1);
+
+        drawCubeVPoint(cube2, Color.RED);
+        rotateZ(cube2, 1);
+
+        auxCube = transform2D(cube);
+
+        drawCube(cube, Color.YELLOW);
+
+        rotateX(cube, 1);
+        rotateZ(cube, 1);
+
+        cube = scale(cube, scaleValue);
+
+        translate(cube, xDistance, yDistance, 0);
+
+        if (   auxCube[0][0] > getWidth() - 210
+            || auxCube[0][1] > getWidth() - 210
+            || auxCube[0][2] > getWidth() - 210
+            || auxCube[0][3] > getWidth() - 210
+            || auxCube[0][4] > getWidth() - 210
+            || auxCube[0][5] > getWidth() - 210
+            || auxCube[0][6] > getWidth() - 210
+            || auxCube[0][7] > getWidth() - 210
+        ) {
+            xDistance = -1;
+        }
+        if (   auxCube[0][0] < -120
+            || auxCube[0][1] < -120
+            || auxCube[0][2] < -120
+            || auxCube[0][3] < -120
+            || auxCube[0][4] < -120
+            || auxCube[0][5] < -120
+            || auxCube[0][6] < -120
+            || auxCube[0][7] < -120
+        ) {
+            xDistance = 1;
+        }
+        if (auxCube[1][7] < - 300) {
+            yDistance = 1;
+        }
+        if (auxCube[1][1] > getHeight() - 300) {
+            yDistance = -1;
+        }
+
+        if ((timeElapsed % 3200) == 0) {
+            scaleTimer *= -1;
+        }
+        if (scaleTimer == 1) {
+            scaleValue = 1.01;
+        }if (scaleTimer == -1) {
+            scaleValue = 0.99;
+        }
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
 
-    private void rotarX(double[][] puntos, double angulo) {
-        double coseno = Math.cos(Math.toRadians(angulo));
-        double seno = Math.sin(Math.toRadians(angulo));
-
-        for (int i = 0; i < puntos[1].length; i++) {
-            double y = puntos[1][i];
-            double z = puntos[2][i];
-
-            puntos[1][i] = y * coseno - z * seno;
-            puntos[2][i] = y * seno + z * coseno;
+    private double[][] scale(double[][] coords, double scaleFactor) {
+        double[][] result = new double[coords.length][coords[0].length];
+        for (int i = 0; i < coords.length; i++) {
+            for (int j = 0; j < coords[0].length; j++) {
+                result[i][j] = coords[i][j] * scaleFactor;
+            }
+        }
+        return result;
+    }
+    private void translate(double[][] coords, int tx, int ty, int tz) {
+        for (int i = 0; i < coords[0].length; i++) {
+            coords[0][i] += tx;
+            coords[1][i] += ty;
+            coords[2][i] += tz;
         }
     }
+    private void rotateX(double[][] coords, double angle) {
+        for (int i = 0; i < coords[1].length; i++) {
+            double y = coords[1][i];
+            double z = coords[2][i];
 
-    private void rotarY(double[][] puntos, double angulo) {
-        double coseno = Math.cos(Math.toRadians(angulo));
-        double seno = Math.sin(Math.toRadians(angulo));
-
-        for (int i = 0; i < puntos[0].length; i++) {
-            double x = puntos[0][i];
-            double z = puntos[2][i];
-
-            puntos[0][i] = x * coseno + z * seno;
-            puntos[2][i] = -x * seno + z * coseno;
+            coords[1][i] = y * Math.cos(Math.toRadians(angle)) - z * Math.sin(Math.toRadians(angle));
+            coords[2][i] = y * Math.sin(Math.toRadians(angle)) + z * Math.cos(Math.toRadians(angle));
         }
     }
+    private void rotateY(double[][] coords, double angle) {
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i];
+            double z = coords[2][i];
 
-    private void rotarZ(double[][] puntos, double angulo) {
-        double coseno = Math.cos(Math.toRadians(angulo));
-        double seno = Math.sin(Math.toRadians(angulo));
-
-        for (int i = 0; i < puntos[0].length; i++) {
-            double x = puntos[0][i];
-            double y = puntos[1][i];
-
-            puntos[0][i] = x * coseno - y * seno;
-            puntos[1][i] = x * seno + y * coseno;
+            coords[0][i] = x * Math.cos(Math.toRadians(angle)) + z * Math.sin(Math.toRadians(angle));
+            coords[2][i] = -x * Math.sin(Math.toRadians(angle)) + z * Math.cos(Math.toRadians(angle));
         }
     }
+    private void rotateZ(double[][] coords, double angle) {
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i];
+            double y = coords[1][i];
 
+            coords[0][i] = x * Math.cos(Math.toRadians(angle)) - y * Math.sin(Math.toRadians(angle));
+            coords[1][i] = x * Math.sin(Math.toRadians(angle)) + y * Math.cos(Math.toRadians(angle));
+        }
+    }
+    private void rotateAroundCenter(double[][] coords, double angle, double centerX, double centerY) {
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i] - centerX;
+            double y = coords[1][i] - centerY;
+
+            double newX = x * Math.cos(Math.toRadians(angle)) - y * Math.sin(Math.toRadians(angle));
+            double newY = x * Math.sin(Math.toRadians(angle)) + y * Math.cos(Math.toRadians(angle));
+
+            coords[0][i] = newX + centerX;
+            coords[1][i] = newY + centerY;
+        }
+    }
     public void putPixel(int x, int y, Color pixelColor) {
         bufferPixel.setRGB(0, 0, pixelColor.getRGB());
         graphics.drawImage(bufferPixel, x, y, this);
-    }
-    public int getPixel(int x, int y) {
-        return bufferFondo.getRGB(x, y);
     }
     public void drawLine (int xStart, int yStart, int xEnd, int yEnd) {
         int xk = xStart, yk = yStart;
@@ -159,63 +233,7 @@ public class Proyecto extends JFrame implements Runnable{
             }
         }
     }
-
-    // Figuras
-    public void drawBody (double[][] coords) {
-
-        Puntos[] puntos3D = new Puntos[12];
-        Puntos[] puntos2D = new Puntos[12];
-
-        for (int i = 0; i < coords[0].length; i++) {
-            puntos3D[i] = new Puntos((int) coords[0][i], (int) coords[1][i], (int) coords[2][i]);
-        }
-
-        for (int i = 0; i < puntos3D.length; i++) {
-            int u = (-puntos3D[i].getZ()) / vDireccion[2];
-            int x = puntos3D[i].getX() + (vDireccion[0] * u) + 220;
-            int y = puntos3D[i].getY() + (vDireccion[1] * u) + 520;
-
-            puntos2D[i] = new Puntos(x, y);
-        }
-
-        int xA = puntos2D[0].getX(), yA = puntos2D[0].getY();
-        int xB = puntos2D[1].getX(), yB = puntos2D[1].getY();
-        int xC = puntos2D[2].getX(), yC = puntos2D[2].getY();
-        int xD = puntos2D[3].getX(), yD = puntos2D[3].getY();
-        int xE = puntos2D[4].getX(), yE = puntos2D[4].getY();
-        int xF = puntos2D[5].getX(), yF = puntos2D[5].getY();
-        int xG = puntos2D[6].getX(), yG = puntos2D[6].getY();
-        int xH = puntos2D[7].getX(), yH = puntos2D[7].getY();
-        int xI = puntos2D[8].getX(), yI = puntos2D[8].getY();
-        int xJ = puntos2D[9].getX(), yJ = puntos2D[9].getY();
-        int xK = puntos2D[10].getX(), yK = puntos2D[10].getY();
-        int xL = puntos2D[11].getX(), yL = puntos2D[11].getY();
-
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xC, yC);
-        drawLine(xC, yC, xD, yD);
-        drawLine(xD, yD, xA, yA);
-
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xE, yE);
-        drawLine(xE, yE, xF, yF);
-        drawLine(xF, yF, xG, yG);
-
-        drawLine(xJ, yJ, xK, yK);
-        drawLine(xK, yK, xL, yL);
-        drawLine(xL, yL, xI, yI);
-        drawLine(xI, yI, xJ, yJ);
-
-        drawLine(xC, yC, xG, yG);
-        drawLine(xD, yD, xH, yH);
-
-        drawLine(xA, yA, xJ, yJ);
-        drawLine(xB, yB, xK, yK);
-
-        drawLine(xI, yI, xE, yE);
-        drawLine(xL, yL, xF, yF);
-    }
-    public void drawTail (double[][] coords) {
+    public double[][] transform2D (double[][] coords) {
         Puntos[] puntos3D = new Puntos[8];
         Puntos[] puntos2D = new Puntos[8];
 
@@ -225,8 +243,34 @@ public class Proyecto extends JFrame implements Runnable{
 
         for (int i = 0; i < puntos3D.length; i++) {
             int u = (-puntos3D[i].getZ()) / vDireccion[2];
-            int x = puntos3D[i].getX() + (vDireccion[0] * u) + 220;
-            int y = puntos3D[i].getY() + (vDireccion[1] * u) + 520;
+            int x = puntos3D[i].getX() + (vDireccion[0] * u) + 120;
+            int y = puntos3D[i].getY() + (vDireccion[1] * u) + 320;
+
+            puntos2D[i] = new Puntos(x, y);
+        }
+        int xA = puntos2D[0].getX(), yA = puntos2D[0].getY();
+        int xB = puntos2D[1].getX(), yB = puntos2D[1].getY();
+        int xC = puntos2D[2].getX(), yC = puntos2D[2].getY();
+        int xD = puntos2D[3].getX(), yD = puntos2D[3].getY();
+        int xE = puntos2D[4].getX(), yE = puntos2D[4].getY();
+        int xF = puntos2D[5].getX(), yF = puntos2D[5].getY();
+        int xG = puntos2D[6].getX(), yG = puntos2D[6].getY();
+        int xH = puntos2D[7].getX(), yH = puntos2D[7].getY();
+
+        return new double[][]{{xA, xB, xC, xD, xF, xE, xF, xG, xH}, {yA, yB, yC, yD, yE, yF, yG, yH}};
+    }
+    public void drawCube (double[][] coords, Color color) {
+        Puntos[] puntos3D = new Puntos[8];
+        Puntos[] puntos2D = new Puntos[8];
+
+        for (int i = 0; i < coords[0].length; i++) {
+            puntos3D[i] = new Puntos((int) coords[0][i], (int) coords[1][i], (int) coords[2][i]);
+        }
+
+        for (int i = 0; i < puntos3D.length; i++) {
+            int u = (-puntos3D[i].getZ()) / vDireccion[2];
+            int x = puntos3D[i].getX() + (vDireccion[0] * u) + 120;
+            int y = puntos3D[i].getY() + (vDireccion[1] * u) + 320;
 
             puntos2D[i] = new Puntos(x, y);
         }
@@ -240,24 +284,179 @@ public class Proyecto extends JFrame implements Runnable{
         int xG = puntos2D[6].getX(), yG = puntos2D[6].getY();
         int xH = puntos2D[7].getX(), yH = puntos2D[7].getY();
 
+        graphics.setColor(color);
+        int[] xPoints1 = {xA, xB, xC, xD};
+        int[] yPoints1 = {yA, yB, yC, yD};
         drawLine(xA, yA, xB, yB);
         drawLine(xB, yB, xC, yC);
         drawLine(xC, yC, xD, yD);
         drawLine(xD, yD, xA, yA);
+        graphics.fillPolygon(xPoints1, yPoints1, 4);
 
+        int[] xPoints2 = {xB, xF, xG, xC};
+        int[] yPoints2 = {yB, yF, yG, yC};
+        drawLine(xB, yB, xF, yF);
+        drawLine(xF, yF, xG, yG);
+        drawLine(xG, yG, xC, yC);
+        drawLine(xC, yC, xB, yB);
+        graphics.fillPolygon(xPoints2, yPoints2, 4);
+
+        int[] xPoints3 = {xE, xF, xG, xH};
+        int[] yPoints3 = {yE, yF, yG, yH};
         drawLine(xE, yE, xF, yF);
         drawLine(xF, yF, xG, yG);
         drawLine(xG, yG, xH, yH);
         drawLine(xH, yH, xE, yE);
+        graphics.fillPolygon(xPoints3, yPoints3, 4);
 
-        drawLine(xA, yA, xE, yE);
+        int[] xPoints4 = {xA, xB, xF, xE};
+        int[] yPoints4 = {yA, yB, yF, yE};
+        drawLine(xA, yA, xB, yB);
         drawLine(xB, yB, xF, yF);
-        drawLine(xC, yC, xG, yG);
-        drawLine(xD, yD, xH, yH);
-    }
+        drawLine(xF, yF, xE, yE);
+        drawLine(xE, yE, xA, yA);
+        graphics.fillPolygon(xPoints4, yPoints4, 4);
 
-    public void drawChicken () {
-        drawBody(pollo);
-        drawTail(colita);
+        int[] xPoints5 = {xD, xC, xG, xH};
+        int[] yPoints5 = {yD, yC, yG, yH};
+        drawLine(xD, yD, xC, yC);
+        drawLine(xC, yC, xG, yG);
+        drawLine(xG, yG, xH, yH);
+        drawLine(xH, yH, xD, yD);
+        graphics.fillPolygon(xPoints5, yPoints5, 4);
+    }
+    public void drawCubeVPoint (double[][] coords, Color color) {
+        int[] vPuntoFuga = {10, 10, 100};
+
+        Puntos[] puntos3D = new Puntos[8];
+        Puntos[] puntos2D = new Puntos[8];
+
+        for (int i = 0; i < coords[0].length; i++) {
+            puntos3D[i] = new Puntos((int) coords[0][i], (int) coords[1][i], (int) coords[2][i]);
+        }
+
+        for (int i = 0; i < puntos3D.length; i++) {
+            int u = -vPuntoFuga[2] / (puntos3D[i].getZ() - vPuntoFuga[2]);
+            int x = vPuntoFuga[0] + ((puntos3D[i].getX() - vPuntoFuga[0]) * u) + 300;
+            int y = vPuntoFuga[1] + ((puntos3D[i].getY() - vPuntoFuga[1]) * u) + 300;
+
+            puntos2D[i] = new Puntos(x, y);
+        }
+
+        int xA = puntos2D[0].getX(), yA = puntos2D[0].getY();
+        int xB = puntos2D[1].getX(), yB = puntos2D[1].getY();
+        int xC = puntos2D[2].getX(), yC = puntos2D[2].getY();
+        int xD = puntos2D[3].getX(), yD = puntos2D[3].getY();
+        int xE = puntos2D[4].getX(), yE = puntos2D[4].getY();
+        int xF = puntos2D[5].getX(), yF = puntos2D[5].getY();
+        int xG = puntos2D[6].getX(), yG = puntos2D[6].getY();
+        int xH = puntos2D[7].getX(), yH = puntos2D[7].getY();
+
+        graphics.setColor(color);
+        int[] xPoints1 = {xA, xB, xC, xD};
+        int[] yPoints1 = {yA, yB, yC, yD};
+        drawLine(xA, yA, xB, yB);
+        drawLine(xB, yB, xC, yC);
+        drawLine(xC, yC, xD, yD);
+        drawLine(xD, yD, xA, yA);
+        graphics.fillPolygon(xPoints1, yPoints1, 4);
+
+        int[] xPoints2 = {xB, xF, xG, xC};
+        int[] yPoints2 = {yB, yF, yG, yC};
+        drawLine(xB, yB, xF, yF);
+        drawLine(xF, yF, xG, yG);
+        drawLine(xG, yG, xC, yC);
+        drawLine(xC, yC, xB, yB);
+        graphics.fillPolygon(xPoints2, yPoints2, 4);
+
+        int[] xPoints3 = {xE, xF, xG, xH};
+        int[] yPoints3 = {yE, yF, yG, yH};
+        drawLine(xE, yE, xF, yF);
+        drawLine(xF, yF, xG, yG);
+        drawLine(xG, yG, xH, yH);
+        drawLine(xH, yH, xE, yE);
+        graphics.fillPolygon(xPoints3, yPoints3, 4);
+
+        int[] xPoints4 = {xA, xB, xF, xE};
+        int[] yPoints4 = {yA, yB, yF, yE};
+        drawLine(xA, yA, xB, yB);
+        drawLine(xB, yB, xF, yF);
+        drawLine(xF, yF, xE, yE);
+        drawLine(xE, yE, xA, yA);
+        graphics.fillPolygon(xPoints4, yPoints4, 4);
+
+        int[] xPoints5 = {xD, xC, xG, xH};
+        int[] yPoints5 = {yD, yC, yG, yH};
+        drawLine(xD, yD, xC, yC);
+        drawLine(xC, yC, xG, yG);
+        drawLine(xG, yG, xH, yH);
+        drawLine(xH, yH, xD, yD);
+        graphics.fillPolygon(xPoints5, yPoints5, 4);
+    }
+    public void drawOrthogonal (double[][] coords, Color color) {
+        Puntos[] puntos3D = new Puntos[8];
+        Puntos[] puntos2D = new Puntos[8];
+
+        for (int i = 0; i < coords[0].length; i++) {
+            puntos3D[i] = new Puntos((int) coords[0][i], (int) coords[1][i], (int) coords[2][i]);
+        }
+
+        for (int i = 0; i < puntos3D.length; i++) {
+            int u = 0; // xpU, ypU, zpU son iguales a 0.
+            int x = puntos3D[i].getX() + 120;
+            int y = puntos3D[i].getY() + 320;
+
+            puntos2D[i] = new Puntos(x, y);
+        }
+
+        int xA = puntos2D[0].getX(), yA = puntos2D[0].getY();
+        int xB = puntos2D[1].getX(), yB = puntos2D[1].getY();
+        int xC = puntos2D[2].getX(), yC = puntos2D[2].getY();
+        int xD = puntos2D[3].getX(), yD = puntos2D[3].getY();
+        int xE = puntos2D[4].getX(), yE = puntos2D[4].getY();
+        int xF = puntos2D[5].getX(), yF = puntos2D[5].getY();
+        int xG = puntos2D[6].getX(), yG = puntos2D[6].getY();
+        int xH = puntos2D[7].getX(), yH = puntos2D[7].getY();
+
+        graphics.setColor(color);
+        int[] xPoints1 = {xA, xB, xC, xD};
+        int[] yPoints1 = {yA, yB, yC, yD};
+        drawLine(xA, yA, xB, yB);
+        drawLine(xB, yB, xC, yC);
+        drawLine(xC, yC, xD, yD);
+        drawLine(xD, yD, xA, yA);
+        graphics.fillPolygon(xPoints1, yPoints1, 4);
+
+        int[] xPoints2 = {xB, xF, xG, xC};
+        int[] yPoints2 = {yB, yF, yG, yC};
+        drawLine(xB, yB, xF, yF);
+        drawLine(xF, yF, xG, yG);
+        drawLine(xG, yG, xC, yC);
+        drawLine(xC, yC, xB, yB);
+        graphics.fillPolygon(xPoints2, yPoints2, 4);
+
+        int[] xPoints3 = {xE, xF, xG, xH};
+        int[] yPoints3 = {yE, yF, yG, yH};
+        drawLine(xE, yE, xF, yF);
+        drawLine(xF, yF, xG, yG);
+        drawLine(xG, yG, xH, yH);
+        drawLine(xH, yH, xE, yE);
+        graphics.fillPolygon(xPoints3, yPoints3, 4);
+
+        int[] xPoints4 = {xA, xB, xF, xE};
+        int[] yPoints4 = {yA, yB, yF, yE};
+        drawLine(xA, yA, xB, yB);
+        drawLine(xB, yB, xF, yF);
+        drawLine(xF, yF, xE, yE);
+        drawLine(xE, yE, xA, yA);
+        graphics.fillPolygon(xPoints4, yPoints4, 4);
+
+        int[] xPoints5 = {xD, xC, xG, xH};
+        int[] yPoints5 = {yD, yC, yG, yH};
+        drawLine(xD, yD, xC, yC);
+        drawLine(xC, yC, xG, yG);
+        drawLine(xG, yG, xH, yH);
+        drawLine(xH, yH, xD, yD);
+        graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
 }
