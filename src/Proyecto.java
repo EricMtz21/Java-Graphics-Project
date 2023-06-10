@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Stack;
 
 public class Proyecto extends JFrame implements Runnable{
     private BufferedImage bufferFondo, bufferPixel;
@@ -16,54 +17,6 @@ public class Proyecto extends JFrame implements Runnable{
     double scaleValue = 1.01;
     float timeElapsed = 0;
     int scaleTimer = 1;
-
-    // Colores
-    Color pastoClaro = new Color(166, 214, 94);
-    Color pastoOscuro = new Color(160, 208, 88);
-    Color pastoBorde = new Color(84, 110, 50);
-    Color calleCentro = new Color(72, 78, 92);
-    Color calleLinea = new Color(110, 118, 142);
-    Color calleBorde = new Color(36, 40, 50);
-    Color troncoCuerpo = new Color(126, 74, 76);
-    Color troncoBorde = new Color(148, 100, 96);
-    Color troncoArbolFrente = new Color(66, 40, 40);
-    Color troncoArbolDerecha = new Color(38, 28, 26);
-    Color hojasFrente = new Color(94, 108, 24);
-    Color hojasArriba = new Color(160, 190, 32);
-    Color hojasDerecha = new Color(56, 68, 18);
-    Color polloFrente = new Color(136, 140, 174);
-    Color polloArriba = new Color(253, 253, 253);
-    Color polloDerecha = new Color(84, 86, 138);
-    Color crestaArriba = new Color(230, 82, 104);
-    Color crestaFrente = new Color(120, 48, 62);
-    Color crestaDerecha = new Color(94, 28, 50);
-    Color aguaClara = new Color(114, 216, 254);
-    Color aguaOscura = new Color(86, 190, 254);
-
-    // FIguras
-    private double[][] calle = {
-            {0, getWidth(), getWidth(), 0},
-            {0, 0, getHeight(), getHeight()},
-    };
-    private double[][] cube = {
-            {20, 60, 60, 20, 20, 60, 60, 20},
-            {40, 40, 40, 40, 70, 70, 70, 70},
-            { 0,  0, 60, 60, 0, 0, 60, 60},
-            { 1,  1,  1,  1,  1,  1,  1,  1}
-    };
-    private double[][] cube2 = {
-            {120, 70, 70, 120, 120, 70, 70, 120},
-            {40, 40, 40, 40, 70, 70, 70, 70},
-            { 0,  0, 60, 60, 0, 0, 60, 60},
-            { 1,  1,  1,  1,  1,  1,  1,  1}
-    };
-    private double[][] cube3 = {
-            {20, 60, 60, 20, 20, 60, 60, 20},
-            {40, 40, 40, 40, 70, 70, 70, 70},
-            { 0,  0, 60, 60, 0, 0, 60, 60},
-            { 1,  1,  1,  1,  1,  1,  1,  1}
-    };
-    private double[][] auxCube = { };
 
     public Proyecto () {
         setSize(800, 800);
@@ -96,15 +49,53 @@ public class Proyecto extends JFrame implements Runnable{
         }
     }
 
+    public void paintPath () {
+        drawRectangle(Coordenadas.calle1, Colores.calleCentro);
+        drawRectangle(Coordenadas.pastoBorde1, Colores.pastoBorde);
+        drawRectangle(Coordenadas.pastoOscuro1, Colores.pastoOscuro);
+        drawRectangle(Coordenadas.pastoClaro1, Colores.pastoClaro);
+        drawRectangle(Coordenadas.calleMitad1, Colores.calleCentro);
+        drawRectangle(Coordenadas.rio1, Colores.aguaClara);
+        drawRectangle(Coordenadas.calle2, Colores.calleCentro);
+        drawRectangle(Coordenadas.pastoBorde2, Colores.pastoBorde);
+        drawRectangle(Coordenadas.pastoOscuro2, Colores.pastoOscuro);
+        drawRectangle(Coordenadas.pastoClaro2, Colores.pastoClaro);
+        drawRectangle(Coordenadas.calleMitad2, Colores.calleCentro);
+
+
+    }
+
+    public void translatePath () {
+        translate(Coordenadas.calle1 , 0, 1, 0);
+        translate(Coordenadas.pastoBorde1 , 0, 1, 0);
+        translate(Coordenadas.pastoOscuro1, 0, 1, 0);
+        translate(Coordenadas.pastoClaro1, 0, 1, 0);
+        translate(Coordenadas.calleMitad1, 0, 1, 0);
+        translate(Coordenadas.rio1, 0, 1, 0);
+        translate(Coordenadas.calle2, 0, 1, 0);
+        translate(Coordenadas.pastoBorde2, 0, 1, 0);
+        translate(Coordenadas.pastoOscuro2, 0, 1, 0);
+        translate(Coordenadas.pastoClaro2, 0, 1, 0);
+        translate(Coordenadas.calleMitad2, 0, 1, 0);
+    }
+
     public void paint(Graphics g) {
         super.paint(graphics);
 
-        drawRectangle(calle, calleCentro);
-        drawCube(cube, polloFrente);
+        paintPath();
+        translatePath();
+        //drawCube(Coordenadas.cube, Colores.polloFrente);
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
 
+    public void putPixel(int x, int y, Color pixelColor) {
+        bufferPixel.setRGB(0, 0, pixelColor.getRGB());
+        graphics.drawImage(bufferPixel, x, y, this);
+    }
+    public int getPixel(int x, int y) {
+        return bufferFondo.getRGB(x, y);
+    }
     private double[][] scale(double[][] coords, double scaleFactor) {
         double[][] result = new double[coords.length][coords[0].length];
         for (int i = 0; i < coords.length; i++) {
@@ -159,10 +150,6 @@ public class Proyecto extends JFrame implements Runnable{
             coords[0][i] = newX + centerX;
             coords[1][i] = newY + centerY;
         }
-    }
-    public void putPixel(int x, int y, Color pixelColor) {
-        bufferPixel.setRGB(0, 0, pixelColor.getRGB());
-        graphics.drawImage(bufferPixel, x, y, this);
     }
     public void drawLine (int xStart, int yStart, int xEnd, int yEnd, Color color) {
         int xk = xStart, yk = yStart;
@@ -434,7 +421,6 @@ public class Proyecto extends JFrame implements Runnable{
         drawLine(xH, yH, xD, yD, color);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
-
     public void drawRectangle (double[][] coords, Color color) {
         int xA = (int) coords[0][0]; int yA = (int) coords[1][0];
         int xB = (int) coords[0][1]; int yB = (int) coords[1][1];
@@ -449,14 +435,34 @@ public class Proyecto extends JFrame implements Runnable{
         int totalPuntos = coords[0].length;
 
         int sumaX = 0;
-        int sumaY = 0;
 
         for (int i = 0; i < totalPuntos; i++) {
             sumaX += (int) coords[0][i];
-            sumaY += (int) coords[1][i];
         }
 
         int centroX = sumaX / totalPuntos;
-        int centroY = sumaY / totalPuntos;
+
+        FloodFill(centroX, yA + 1, color, color);
+        FloodFill(centroX, yC - 1, color, color);
+    }
+    public void FloodFill (int x, int y, Color borde, Color relleno) {
+        Stack<Point> coordinates = new Stack<>();
+        coordinates.push(new Point(x, y));
+
+        while (!coordinates.isEmpty()) {
+            Point coordinate = coordinates.pop();
+
+            if (isWithinBounds(coordinate.x, coordinate.y) && getPixel(coordinate.x, coordinate.y) != borde.getRGB() && getPixel(coordinate.x, coordinate.y) != relleno.getRGB()) {
+                putPixel(coordinate.x, coordinate.y, relleno);
+
+                coordinates.push(new Point(coordinate.x + 1, coordinate.y));
+                coordinates.push(new Point(coordinate.x - 1, coordinate.y));
+                coordinates.push(new Point(coordinate.x, coordinate.y + 1));
+                coordinates.push(new Point(coordinate.x, coordinate.y - 1));
+            }
+        }
+    }
+    private boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x < bufferFondo.getWidth() && y >= 0 && y < bufferFondo.getHeight();
     }
 }
