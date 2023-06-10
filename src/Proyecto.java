@@ -412,4 +412,16 @@ public class Proyecto extends JFrame implements Runnable{
         drawLine(xH, yH, xD, yD);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
+
+    public void drawRectangle (double[][] coords, Color color) {
+        int xA = (int) coords[0][0]; int yA = (int) coords[1][0];
+        int xB = (int) coords[0][1]; int yB = (int) coords[1][1];
+        int xC = (int) coords[0][2]; int yC = (int) coords[1][2];
+        int xD = (int) coords[0][3]; int yD = (int) coords[1][3];
+
+        drawLine(xA, yA, xB, yB);
+        drawLine(xB, yB, xC, yC);
+        drawLine(xC, yC, xD, yD);
+        drawLine(xD, yD, xA, yA);
+    }
 }
