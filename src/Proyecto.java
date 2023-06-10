@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Stack;
 
 public class Proyecto extends JFrame implements Runnable{
     private BufferedImage bufferFondo, bufferPixel;
@@ -185,6 +186,30 @@ public class Proyecto extends JFrame implements Runnable{
                 }
             }
         }
+    }
+
+    public int getPixel(int x, int y) {
+        return bufferFondo.getRGB(x, y);
+    }
+    public void FloodFill (int x, int y, Color borde, Color relleno) {
+        Stack<Point> coordinates = new Stack<>();
+        coordinates.push(new Point(x, y));
+
+        while (!coordinates.isEmpty()) {
+            Point coordinate = coordinates.pop();
+
+            if (isWithinBounds(coordinate.x, coordinate.y) && getPixel(coordinate.x, coordinate.y) != borde.getRGB() && getPixel(coordinate.x, coordinate.y) != relleno.getRGB()) {
+                putPixel(coordinate.x, coordinate.y, relleno);
+
+                coordinates.push(new Point(coordinate.x + 1, coordinate.y));
+                coordinates.push(new Point(coordinate.x - 1, coordinate.y));
+                coordinates.push(new Point(coordinate.x, coordinate.y + 1));
+                coordinates.push(new Point(coordinate.x, coordinate.y - 1));
+            }
+        }
+    }
+    private boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x < bufferFondo.getWidth() && y >= 0 && y < bufferFondo.getHeight();
     }
     public double[][] transform2D (double[][] coords) {
         Puntos[] puntos3D = new Puntos[8];
