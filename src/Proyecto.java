@@ -17,6 +17,29 @@ public class Proyecto extends JFrame implements Runnable{
     float timeElapsed = 0;
     int scaleTimer = 1;
 
+    // Colores
+    Color pastoClaro = new Color(166, 214, 94);
+    Color pastoOscuro = new Color(160, 208, 88);
+    Color pastoBorde = new Color(84, 110, 50);
+    Color calleCentro = new Color(72, 78, 92);
+    Color calleLinea = new Color(110, 118, 142);
+    Color calleBorde = new Color(36, 40, 50);
+    Color troncoCuerpo = new Color(126, 74, 76);
+    Color troncoBorde = new Color(148, 100, 96);
+    Color troncoArbolFrente = new Color(66, 40, 40);
+    Color troncoArbolDerecha = new Color(38, 28, 26);
+    Color hojasFrente = new Color(94, 108, 24);
+    Color hojasArriba = new Color(160, 190, 32);
+    Color hojasDerecha = new Color(56, 68, 18);
+    Color polloFrente = new Color(136, 140, 174);
+    Color polloArriba = new Color(253, 253, 253);
+    Color polloDerecha = new Color(84, 86, 138);
+    Color crestaArriba = new Color(230, 82, 104);
+    Color crestaFrente = new Color(120, 48, 62);
+    Color crestaDerecha = new Color(94, 28, 50);
+    Color aguaClara = new Color(114, 216, 254);
+    Color aguaOscura = new Color(86, 190, 254);
+
     // FIguras
     private double[][] calle = {
             {0, },
@@ -142,7 +165,7 @@ public class Proyecto extends JFrame implements Runnable{
         bufferPixel.setRGB(0, 0, pixelColor.getRGB());
         graphics.drawImage(bufferPixel, x, y, this);
     }
-    public void drawLine (int xStart, int yStart, int xEnd, int yEnd) {
+    public void drawLine (int xStart, int yStart, int xEnd, int yEnd, Color color) {
         int xk = xStart, yk = yStart;
         int dx = xEnd - xStart, dy = yEnd - yStart;
         int incX = 1, incY = 1, incE, incNE, pk = 0;
@@ -161,7 +184,7 @@ public class Proyecto extends JFrame implements Runnable{
             incNE = 2 * (dy - dx);
 
             while (xk != xEnd) {
-                putPixel(xk, yk, Color.BLACK);
+                putPixel(xk, yk, color);
                 xk += incX;
                 if (2 * (pk + dy) < dx) {
                     pk += incE;
@@ -175,7 +198,7 @@ public class Proyecto extends JFrame implements Runnable{
             incNE = 2 * (dx - dy);
 
             while (yk != yEnd) {
-                putPixel(xk, yk, Color.BLACK);
+                putPixel(xk, yk, color);
                 yk += incY;
                 if (2 * (pk + dx) < dy) {
                     pk += incE;
@@ -240,42 +263,42 @@ public class Proyecto extends JFrame implements Runnable{
         graphics.setColor(color);
         int[] xPoints1 = {xA, xB, xC, xD};
         int[] yPoints1 = {yA, yB, yC, yD};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xC, yC);
-        drawLine(xC, yC, xD, yD);
-        drawLine(xD, yD, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xC, yC, color);
+        drawLine(xC, yC, xD, yD, color);
+        drawLine(xD, yD, xA, yA, color);
         graphics.fillPolygon(xPoints1, yPoints1, 4);
 
         int[] xPoints2 = {xB, xF, xG, xC};
         int[] yPoints2 = {yB, yF, yG, yC};
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xC, yC);
-        drawLine(xC, yC, xB, yB);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xC, yC, color);
+        drawLine(xC, yC, xB, yB, color);
         graphics.fillPolygon(xPoints2, yPoints2, 4);
 
         int[] xPoints3 = {xE, xF, xG, xH};
         int[] yPoints3 = {yE, yF, yG, yH};
-        drawLine(xE, yE, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xE, yE);
+        drawLine(xE, yE, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xE, yE, color);
         graphics.fillPolygon(xPoints3, yPoints3, 4);
 
         int[] xPoints4 = {xA, xB, xF, xE};
         int[] yPoints4 = {yA, yB, yF, yE};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xE, yE);
-        drawLine(xE, yE, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xE, yE, color);
+        drawLine(xE, yE, xA, yA, color);
         graphics.fillPolygon(xPoints4, yPoints4, 4);
 
         int[] xPoints5 = {xD, xC, xG, xH};
         int[] yPoints5 = {yD, yC, yG, yH};
-        drawLine(xD, yD, xC, yC);
-        drawLine(xC, yC, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xD, yD);
+        drawLine(xD, yD, xC, yC, color);
+        drawLine(xC, yC, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xD, yD, color);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
     public void drawCubeVPoint (double[][] coords, Color color) {
@@ -308,42 +331,42 @@ public class Proyecto extends JFrame implements Runnable{
         graphics.setColor(color);
         int[] xPoints1 = {xA, xB, xC, xD};
         int[] yPoints1 = {yA, yB, yC, yD};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xC, yC);
-        drawLine(xC, yC, xD, yD);
-        drawLine(xD, yD, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xC, yC, color);
+        drawLine(xC, yC, xD, yD, color);
+        drawLine(xD, yD, xA, yA, color);
         graphics.fillPolygon(xPoints1, yPoints1, 4);
 
         int[] xPoints2 = {xB, xF, xG, xC};
         int[] yPoints2 = {yB, yF, yG, yC};
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xC, yC);
-        drawLine(xC, yC, xB, yB);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xC, yC, color);
+        drawLine(xC, yC, xB, yB, color);
         graphics.fillPolygon(xPoints2, yPoints2, 4);
 
         int[] xPoints3 = {xE, xF, xG, xH};
         int[] yPoints3 = {yE, yF, yG, yH};
-        drawLine(xE, yE, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xE, yE);
+        drawLine(xE, yE, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xE, yE, color);
         graphics.fillPolygon(xPoints3, yPoints3, 4);
 
         int[] xPoints4 = {xA, xB, xF, xE};
         int[] yPoints4 = {yA, yB, yF, yE};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xE, yE);
-        drawLine(xE, yE, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xE, yE, color);
+        drawLine(xE, yE, xA, yA, color);
         graphics.fillPolygon(xPoints4, yPoints4, 4);
 
         int[] xPoints5 = {xD, xC, xG, xH};
         int[] yPoints5 = {yD, yC, yG, yH};
-        drawLine(xD, yD, xC, yC);
-        drawLine(xC, yC, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xD, yD);
+        drawLine(xD, yD, xC, yC, color);
+        drawLine(xC, yC, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xD, yD, color);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
     public void drawOrthogonal (double[][] coords, Color color) {
@@ -374,42 +397,42 @@ public class Proyecto extends JFrame implements Runnable{
         graphics.setColor(color);
         int[] xPoints1 = {xA, xB, xC, xD};
         int[] yPoints1 = {yA, yB, yC, yD};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xC, yC);
-        drawLine(xC, yC, xD, yD);
-        drawLine(xD, yD, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xC, yC, color);
+        drawLine(xC, yC, xD, yD, color);
+        drawLine(xD, yD, xA, yA, color);
         graphics.fillPolygon(xPoints1, yPoints1, 4);
 
         int[] xPoints2 = {xB, xF, xG, xC};
         int[] yPoints2 = {yB, yF, yG, yC};
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xC, yC);
-        drawLine(xC, yC, xB, yB);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xC, yC, color);
+        drawLine(xC, yC, xB, yB, color);
         graphics.fillPolygon(xPoints2, yPoints2, 4);
 
         int[] xPoints3 = {xE, xF, xG, xH};
         int[] yPoints3 = {yE, yF, yG, yH};
-        drawLine(xE, yE, xF, yF);
-        drawLine(xF, yF, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xE, yE);
+        drawLine(xE, yE, xF, yF, color);
+        drawLine(xF, yF, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xE, yE, color);
         graphics.fillPolygon(xPoints3, yPoints3, 4);
 
         int[] xPoints4 = {xA, xB, xF, xE};
         int[] yPoints4 = {yA, yB, yF, yE};
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xF, yF);
-        drawLine(xF, yF, xE, yE);
-        drawLine(xE, yE, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xF, yF, color);
+        drawLine(xF, yF, xE, yE, color);
+        drawLine(xE, yE, xA, yA, color);
         graphics.fillPolygon(xPoints4, yPoints4, 4);
 
         int[] xPoints5 = {xD, xC, xG, xH};
         int[] yPoints5 = {yD, yC, yG, yH};
-        drawLine(xD, yD, xC, yC);
-        drawLine(xC, yC, xG, yG);
-        drawLine(xG, yG, xH, yH);
-        drawLine(xH, yH, xD, yD);
+        drawLine(xD, yD, xC, yC, color);
+        drawLine(xC, yC, xG, yG, color);
+        drawLine(xG, yG, xH, yH, color);
+        drawLine(xH, yH, xD, yD, color);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
 
@@ -419,9 +442,9 @@ public class Proyecto extends JFrame implements Runnable{
         int xC = (int) coords[0][2]; int yC = (int) coords[1][2];
         int xD = (int) coords[0][3]; int yD = (int) coords[1][3];
 
-        drawLine(xA, yA, xB, yB);
-        drawLine(xB, yB, xC, yC);
-        drawLine(xC, yC, xD, yD);
-        drawLine(xD, yD, xA, yA);
+        drawLine(xA, yA, xB, yB, color);
+        drawLine(xB, yB, xC, yC, color);
+        drawLine(xC, yC, xD, yD, color);
+        drawLine(xD, yD, xA, yA, color);
     }
 }
