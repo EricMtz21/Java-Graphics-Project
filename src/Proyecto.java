@@ -18,6 +18,12 @@ public class Proyecto extends JFrame implements Runnable{
     int scaleTimer = 1;
 
     // FIguras
+    private double[][] calle = {
+            {0, },
+            {},
+            {},
+            {}
+    };
     private double[][] cube = {
             {20, 60, 60, 20, 20, 60, 60, 20},
             {40, 40, 40, 40, 70, 70, 70, 70},
@@ -40,7 +46,7 @@ public class Proyecto extends JFrame implements Runnable{
 
     public Proyecto () {
         setSize(800, 800);
-        setTitle("Universe");
+        setTitle("Crossy Road");
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,60 +78,7 @@ public class Proyecto extends JFrame implements Runnable{
     public void paint(Graphics g) {
         super.paint(graphics);
 
-        drawOrthogonal(cube3, Color.CYAN);
-        rotateX(cube3, 1);
 
-        drawCubeVPoint(cube2, Color.RED);
-        rotateZ(cube2, 1);
-
-        auxCube = transform2D(cube);
-
-        drawCube(cube, Color.YELLOW);
-
-        rotateX(cube, 1);
-        rotateZ(cube, 1);
-
-        cube = scale(cube, scaleValue);
-
-        translate(cube, xDistance, yDistance, 0);
-
-        if (   auxCube[0][0] > getWidth() - 210
-            || auxCube[0][1] > getWidth() - 210
-            || auxCube[0][2] > getWidth() - 210
-            || auxCube[0][3] > getWidth() - 210
-            || auxCube[0][4] > getWidth() - 210
-            || auxCube[0][5] > getWidth() - 210
-            || auxCube[0][6] > getWidth() - 210
-            || auxCube[0][7] > getWidth() - 210
-        ) {
-            xDistance = -1;
-        }
-        if (   auxCube[0][0] < -120
-            || auxCube[0][1] < -120
-            || auxCube[0][2] < -120
-            || auxCube[0][3] < -120
-            || auxCube[0][4] < -120
-            || auxCube[0][5] < -120
-            || auxCube[0][6] < -120
-            || auxCube[0][7] < -120
-        ) {
-            xDistance = 1;
-        }
-        if (auxCube[1][7] < - 300) {
-            yDistance = 1;
-        }
-        if (auxCube[1][1] > getHeight() - 300) {
-            yDistance = -1;
-        }
-
-        if ((timeElapsed % 3200) == 0) {
-            scaleTimer *= -1;
-        }
-        if (scaleTimer == 1) {
-            scaleValue = 1.01;
-        }if (scaleTimer == -1) {
-            scaleValue = 0.99;
-        }
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
