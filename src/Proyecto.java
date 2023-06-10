@@ -42,10 +42,8 @@ public class Proyecto extends JFrame implements Runnable{
 
     // FIguras
     private double[][] calle = {
-            {0, },
-            {},
-            {},
-            {}
+            {0, getWidth(), getWidth(), 0},
+            {0, 0, getHeight(), getHeight()},
     };
     private double[][] cube = {
             {20, 60, 60, 20, 20, 60, 60, 20},
@@ -101,7 +99,8 @@ public class Proyecto extends JFrame implements Runnable{
     public void paint(Graphics g) {
         super.paint(graphics);
 
-
+        drawRectangle(calle, calleCentro);
+        drawCube(cube, polloFrente);
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
@@ -446,5 +445,18 @@ public class Proyecto extends JFrame implements Runnable{
         drawLine(xB, yB, xC, yC, color);
         drawLine(xC, yC, xD, yD, color);
         drawLine(xD, yD, xA, yA, color);
+
+        int totalPuntos = coords[0].length;
+
+        int sumaX = 0;
+        int sumaY = 0;
+
+        for (int i = 0; i < totalPuntos; i++) {
+            sumaX += (int) coords[0][i];
+            sumaY += (int) coords[1][i];
+        }
+
+        int centroX = sumaX / totalPuntos;
+        int centroY = sumaY / totalPuntos;
     }
 }
