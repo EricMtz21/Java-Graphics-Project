@@ -115,7 +115,6 @@ public class Proyecto extends JFrame implements Runnable{
 
     public void paintPath () {
         drawRectangle(Coordenadas.calle1, Colores.calleCentro);
-        //drawRectangle(Coordenadas.calle1Ralla1, Colores.calleLinea);
 
         drawRectangle(Coordenadas.pastoBorde1, Colores.pastoBorde);
         drawRectangle(Coordenadas.pastoOscuro1, Colores.pastoOscuro);
@@ -130,26 +129,35 @@ public class Proyecto extends JFrame implements Runnable{
         drawRectangle(Coordenadas.calleMitad2, Colores.calleCentro);
         drawRectangle(Coordenadas.rio2, Colores.aguaClara);
         drawRectangle(Coordenadas.calle1Borde, Colores.calleBorde);
-
         drawCube(Coordenadas.troncoArbol1, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
         drawCube(Coordenadas.hojasArbol1, Colores.hojasFrente, Colores.hojasFrente);
-        drawCube(Coordenadas.troncoArbol2, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
-        drawCube(Coordenadas.hojasArbol2, Colores.hojasFrente, Colores.hojasFrente);
         drawCube(Coordenadas.troncoArbol3, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
         drawCube(Coordenadas.hojasArbol3, Colores.hojasFrente, Colores.hojasFrente);
-        drawCube(Coordenadas.troncoArbol4, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
-        drawCube(Coordenadas.hojasArbol4, Colores.hojasFrente, Colores.hojasFrente);
         drawCube(Coordenadas.troncoArbol5, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
         drawCube(Coordenadas.hojasArbol5, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol2, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol2, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol4, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol4, Colores.hojasFrente, Colores.hojasFrente);
         drawCube(Coordenadas.troncoArbol6, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
         drawCube(Coordenadas.hojasArbol6, Colores.hojasFrente, Colores.hojasFrente);
     }
-
+    public void paintChicken () {
+        drawCube(Coordenadas.pataDerecha, Colores.picoPollo, Colores.picoPollo);
+        drawCube(Coordenadas.piernaDerecha, Colores.pataPollo, Colores.pataPollo);
+        drawCube(Coordenadas.pataIzquierda, Colores.picoPollo, Colores.picoPollo);
+        drawCube(Coordenadas.piernaIzquierda, Colores.pataPollo, Colores.pataPollo);
+        drawCube(Coordenadas.alaIzquierdaPollo, Colores.polloFrente, Colores.polloFrente);
+        drawCube(Coordenadas.picoPollo, Colores.picoPollo, Colores.picoPollo);
+        drawCube(Coordenadas.cuerpoPollo, Colores.polloArriba, Colores.polloArriba);
+        drawCube(Coordenadas.cabezaPollo, Colores.polloArriba, Colores.polloArriba);
+        drawCube(Coordenadas.crestaPollo, Colores.crestaArriba, Colores.crestaArriba);
+        drawCube(Coordenadas.alaDerechaPollo, Colores.polloFrente, Colores.polloFrente);
+        drawCube(Coordenadas.ojo, Color.BLACK, Color.BLACK);
+        drawCube(Coordenadas.colitaPollo, Colores.polloFrente, Colores.polloFrente);
+    }
     public void translatePath () {
         translate(Coordenadas.calle1 , 0, yDistance, 0);
-        //translate(Coordenadas.calle1Ralla1 , 0, yDistance, 0);
-
-
         translate(Coordenadas.pastoBorde1 , 0, yDistance, 0);
         translate(Coordenadas.pastoOscuro1, 0, yDistance, 0);
         translate(Coordenadas.pastoClaro1, 0, yDistance, 0);
@@ -163,7 +171,6 @@ public class Proyecto extends JFrame implements Runnable{
         translate(Coordenadas.calleMitad2, 0, yDistance, 0);
         translate(Coordenadas.rio2, 0, yDistance, 0);
         translate(Coordenadas.calle1Borde, 0, yDistance, 0);
-
         translate(Coordenadas.troncoArbol1, 0, yDistance, 0);
         translate(Coordenadas.hojasArbol1, 0, yDistance, 0);
         translate(Coordenadas.troncoArbol2, 0, yDistance, 0);
@@ -296,6 +303,7 @@ public class Proyecto extends JFrame implements Runnable{
         translatePath();
 
         paintLogs();
+        paintChicken();
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
@@ -589,7 +597,7 @@ public class Proyecto extends JFrame implements Runnable{
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
     public void drawCubeVPoint (double[][] coords, Color color) {
-        int[] vPuntoFuga = {10, 10, 100};
+        int[] vPuntoFuga = {110, 350, 60};
 
         Puntos[] puntos3D = new Puntos[8];
         Puntos[] puntos2D = new Puntos[8];
@@ -600,8 +608,8 @@ public class Proyecto extends JFrame implements Runnable{
 
         for (int i = 0; i < puntos3D.length; i++) {
             int u = -vPuntoFuga[2] / (puntos3D[i].getZ() - vPuntoFuga[2]);
-            int x = vPuntoFuga[0] + ((puntos3D[i].getX() - vPuntoFuga[0]) * u) + 300;
-            int y = vPuntoFuga[1] + ((puntos3D[i].getY() - vPuntoFuga[1]) * u) + 300;
+            int x = vPuntoFuga[0] + ((puntos3D[i].getX() - vPuntoFuga[0]) * u) + 100;
+            int y = vPuntoFuga[1] + ((puntos3D[i].getY() - vPuntoFuga[1]) * u) + 100;
 
             puntos2D[i] = new Puntos(x, y);
         }

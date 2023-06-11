@@ -14,11 +14,14 @@ public class Colores {
     static Color hojasFrente = new Color(94, 108, 24);
     static Color hojasArriba = new Color(160, 190, 32);
     static Color hojasDerecha = new Color(56, 68, 18);
-    static Color polloFrente = new Color(136, 140, 174);
+    static Color polloFrente = new Color(230, 230, 230);
     static Color polloArriba = new Color(253, 253, 253);
     static Color polloDerecha = new Color(84, 86, 138);
     static Color crestaArriba = new Color(230, 82, 104);
     static Color crestaFrente = new Color(120, 48, 62);
     static Color crestaDerecha = new Color(94, 28, 50);
     static Color aguaClara = new Color(114, 216, 254);
+    static Color piedra = new Color(176, 161, 202);
+    static Color picoPollo = new Color(235, 110, 98);
+    static Color pataPollo = new Color(220, 100, 98);
 }
