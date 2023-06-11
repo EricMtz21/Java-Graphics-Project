@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Proyecto extends JFrame implements Runnable{
@@ -19,29 +18,95 @@ public class Proyecto extends JFrame implements Runnable{
     int scaleTimer = 1;
 
     public Proyecto () {
-        setSize(800, 800);
+        setSize(600, 800);
         setTitle("Crossy Road");
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        bufferFondo = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
+        bufferFondo = new BufferedImage(600, 800, BufferedImage.TYPE_INT_RGB);
         bufferPixel = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferFondo.createGraphics();
 
         thread = new Thread(this);
         thread.start();
     }
-
     public static void main (String[] args) {
         new Proyecto().setVisible(true);
     }
-
     public void run () {
         while (isRunning) {
             try {
                 thread.sleep(16);
                 timeElapsed += 16;
+
+                if (Coordenadas.calle1Borde[1][0] == 20) {
+                    Coordenadas.calle1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-130, -130, 20, 20},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.pastoBorde1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-140, -140, -130, -130},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.pastoOscuro1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-215, -215, -140, -140},
+                            {1, 1, 1, 1}
+                    };
+
+                }
+
+                if (Coordenadas.pastoOscuro1[1][0] == 20) {
+                    Coordenadas.pastoClaro1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-55, -55, 20, 20},
+                            {1, 1, 1, 1}
+                    };
+                }
+
+                if (Coordenadas.pastoClaro1[1][0] == 20) {
+                    Coordenadas.calleMitad1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-55, -55, 20, 20},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.rio1 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-205, -205, -55, -55},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.calle2Borde = new double[][]{
+                            {0, 600, 600, 0},
+                            {-215, -215, -205, -205},
+                            {1, 1, 1, 1}
+                    };
+                }
+
+                if (Coordenadas.calle2Borde[1][0] == 20) {
+                    Coordenadas.calle2 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-120, -120, 20, 20},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.pastoBorde2 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-130, -130, -120, -120},
+                            {1, 1, 1, 1}
+                    };
+                    Coordenadas.pastoOscuro2 = new double[][]{
+                            {0, 600, 600, 0},
+                            {-205, -205, -130, -130},
+                            {1, 1, 1, 1}
+                    };
+                }
+
+                if (Coordenadas.pastoOscuro2[1][0] == 20) {
+                    yDistance = 0;
+                }
+
                 repaint();
             } catch (Exception e) {
                 System.out.println();
@@ -56,27 +121,88 @@ public class Proyecto extends JFrame implements Runnable{
         drawRectangle(Coordenadas.pastoClaro1, Colores.pastoClaro);
         drawRectangle(Coordenadas.calleMitad1, Colores.calleCentro);
         drawRectangle(Coordenadas.rio1, Colores.aguaClara);
+        drawRectangle(Coordenadas.calle2Borde, Colores.calleBorde);
         drawRectangle(Coordenadas.calle2, Colores.calleCentro);
         drawRectangle(Coordenadas.pastoBorde2, Colores.pastoBorde);
         drawRectangle(Coordenadas.pastoOscuro2, Colores.pastoOscuro);
         drawRectangle(Coordenadas.pastoClaro2, Colores.pastoClaro);
         drawRectangle(Coordenadas.calleMitad2, Colores.calleCentro);
+        drawRectangle(Coordenadas.rio2, Colores.aguaClara);
+        drawRectangle(Coordenadas.calle1Borde, Colores.calleBorde);
 
-
+        drawCube(Coordenadas.troncoArbol1, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol1, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol2, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol2, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol3, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol3, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol4, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol4, Colores.hojasFrente, Colores.hojasFrente);
     }
 
     public void translatePath () {
-        translate(Coordenadas.calle1 , 0, 1, 0);
-        translate(Coordenadas.pastoBorde1 , 0, 1, 0);
-        translate(Coordenadas.pastoOscuro1, 0, 1, 0);
-        translate(Coordenadas.pastoClaro1, 0, 1, 0);
-        translate(Coordenadas.calleMitad1, 0, 1, 0);
-        translate(Coordenadas.rio1, 0, 1, 0);
-        translate(Coordenadas.calle2, 0, 1, 0);
-        translate(Coordenadas.pastoBorde2, 0, 1, 0);
-        translate(Coordenadas.pastoOscuro2, 0, 1, 0);
-        translate(Coordenadas.pastoClaro2, 0, 1, 0);
-        translate(Coordenadas.calleMitad2, 0, 1, 0);
+        translate(Coordenadas.calle1 , 0, yDistance, 0);
+        translate(Coordenadas.pastoBorde1 , 0, yDistance, 0);
+        translate(Coordenadas.pastoOscuro1, 0, yDistance, 0);
+        translate(Coordenadas.pastoClaro1, 0, yDistance, 0);
+        translate(Coordenadas.calleMitad1, 0, yDistance, 0);
+        translate(Coordenadas.rio1, 0, yDistance, 0);
+        translate(Coordenadas.calle2Borde, 0, yDistance, 0);
+        translate(Coordenadas.calle2, 0, yDistance, 0);
+        translate(Coordenadas.pastoBorde2, 0, yDistance, 0);
+        translate(Coordenadas.pastoOscuro2, 0, yDistance, 0);
+        translate(Coordenadas.pastoClaro2, 0, yDistance, 0);
+        translate(Coordenadas.calleMitad2, 0, yDistance, 0);
+        translate(Coordenadas.rio2, 0, yDistance, 0);
+        translate(Coordenadas.calle1Borde, 0, yDistance, 0);
+
+        translate(Coordenadas.troncoArbol1, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol1, 0, yDistance, 0);
+        translate(Coordenadas.troncoArbol2, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol2, 0, yDistance, 0);
+        translate(Coordenadas.troncoArbol3, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol3, 0, yDistance, 0);
+        translate(Coordenadas.troncoArbol4, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol4, 0, yDistance, 0);
+    }
+
+    public void paintLogs () {
+
+        drawCube(Coordenadas.bordeTroncoIzq1, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq1, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq1, 10);
+
+        drawCube(Coordenadas.tronco1, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco1, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.tronco1, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer1, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer1, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer1, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq2, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq2, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq2, 10);
+
+        drawCube(Coordenadas.tronco2, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco2, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.tronco2, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer2, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer2, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer2, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq3, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq3, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq3, 10);
+
+        drawCube(Coordenadas.tronco3, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco3, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.tronco3, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer3, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer3, 1, (int) (yDistance * 1.5), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer3, 10);
     }
 
     public void paint(Graphics g) {
@@ -84,7 +210,8 @@ public class Proyecto extends JFrame implements Runnable{
 
         paintPath();
         translatePath();
-        //drawCube(Coordenadas.cube, Colores.polloFrente);
+
+        paintLogs();
 
         g.drawImage(bufferFondo, 0, 0, this);
     }
@@ -121,6 +248,58 @@ public class Proyecto extends JFrame implements Runnable{
             coords[2][i] = y * Math.sin(Math.toRadians(angle)) + z * Math.cos(Math.toRadians(angle));
         }
     }
+    private void rotateXFromCenter(double[][] coords, double angle) {
+        // Paso 1: Calcular el centro de la figura
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double minZ = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+        double maxZ = Double.MIN_VALUE;
+
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i];
+            double y = coords[1][i];
+            double z = coords[2][i];
+
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            minZ = Math.min(minZ, z);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+            maxZ = Math.max(maxZ, z);
+        }
+
+        double centerX = (minX + maxX) / 2.0;
+        double centerY = (minY + maxY) / 2.0;
+        double centerZ = (minZ + maxZ) / 2.0;
+
+        // Paso 2: Restar el centro a cada coordenada
+        for (int i = 0; i < coords[0].length; i++) {
+            coords[0][i] -= centerX;
+            coords[1][i] -= centerY;
+            coords[2][i] -= centerZ;
+        }
+
+        // Paso 3: Realizar la rotación
+        double cosAngle = Math.cos(Math.toRadians(angle));
+        double sinAngle = Math.sin(Math.toRadians(angle));
+
+        for (int i = 0; i < coords[1].length; i++) {
+            double y = coords[1][i];
+            double z = coords[2][i];
+
+            coords[1][i] = y * cosAngle - z * sinAngle;
+            coords[2][i] = y * sinAngle + z * cosAngle;
+        }
+
+        // Paso 4: Sumar el centro a cada coordenada
+        for (int i = 0; i < coords[0].length; i++) {
+            coords[0][i] += centerX;
+            coords[1][i] += centerY;
+            coords[2][i] += centerZ;
+        }
+    }
     private void rotateY(double[][] coords, double angle) {
         for (int i = 0; i < coords[0].length; i++) {
             double x = coords[0][i];
@@ -128,6 +307,54 @@ public class Proyecto extends JFrame implements Runnable{
 
             coords[0][i] = x * Math.cos(Math.toRadians(angle)) + z * Math.sin(Math.toRadians(angle));
             coords[2][i] = -x * Math.sin(Math.toRadians(angle)) + z * Math.cos(Math.toRadians(angle));
+        }
+    }
+    private void rotateYFromCenter(double[][] coords, double angle) {
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double minZ = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+        double maxZ = Double.MIN_VALUE;
+
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i];
+            double y = coords[1][i];
+            double z = coords[2][i];
+
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            minZ = Math.min(minZ, z);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+            maxZ = Math.max(maxZ, z);
+        }
+
+        double centerX = (minX + maxX) / 2.0;
+        double centerY = (minY + maxY) / 2.0;
+        double centerZ = (minZ + maxZ) / 2.0;
+
+        for (int i = 0; i < coords[0].length; i++) {
+            coords[0][i] -= centerX;
+            coords[1][i] -= centerY;
+            coords[2][i] -= centerZ;
+        }
+
+        double cosAngle = Math.cos(Math.toRadians(angle));
+        double sinAngle = Math.sin(Math.toRadians(angle));
+
+        for (int i = 0; i < coords[0].length; i++) {
+            double x = coords[0][i];
+            double z = coords[2][i];
+
+            coords[0][i] = x * cosAngle + z * sinAngle;
+            coords[2][i] = -x * sinAngle + z * cosAngle;
+        }
+
+        for (int i = 0; i < coords[0].length; i++) {
+            coords[0][i] += centerX;
+            coords[1][i] += centerY;
+            coords[2][i] += centerZ;
         }
     }
     private void rotateZ(double[][] coords, double angle) {
@@ -221,7 +448,7 @@ public class Proyecto extends JFrame implements Runnable{
 
         return new double[][]{{xA, xB, xC, xD, xF, xE, xF, xG, xH}, {yA, yB, yC, yD, yE, yF, yG, yH}};
     }
-    public void drawCube (double[][] coords, Color color) {
+    public void drawCube (double[][] coords, Color color, Color color2) {
         Puntos[] puntos3D = new Puntos[8];
         Puntos[] puntos2D = new Puntos[8];
 
@@ -249,42 +476,42 @@ public class Proyecto extends JFrame implements Runnable{
         graphics.setColor(color);
         int[] xPoints1 = {xA, xB, xC, xD};
         int[] yPoints1 = {yA, yB, yC, yD};
-        drawLine(xA, yA, xB, yB, color);
-        drawLine(xB, yB, xC, yC, color);
-        drawLine(xC, yC, xD, yD, color);
-        drawLine(xD, yD, xA, yA, color);
+        drawLine(xA, yA, xB, yB, color2);
+        drawLine(xB, yB, xC, yC, color2);
+        drawLine(xC, yC, xD, yD, color2);
+        drawLine(xD, yD, xA, yA, color2);
         graphics.fillPolygon(xPoints1, yPoints1, 4);
 
         int[] xPoints2 = {xB, xF, xG, xC};
         int[] yPoints2 = {yB, yF, yG, yC};
-        drawLine(xB, yB, xF, yF, color);
-        drawLine(xF, yF, xG, yG, color);
-        drawLine(xG, yG, xC, yC, color);
+        drawLine(xB, yB, xF, yF, color2);
+        drawLine(xF, yF, xG, yG, color2);
+        drawLine(xG, yG, xC, yC, color2);
         drawLine(xC, yC, xB, yB, color);
         graphics.fillPolygon(xPoints2, yPoints2, 4);
 
         int[] xPoints3 = {xE, xF, xG, xH};
         int[] yPoints3 = {yE, yF, yG, yH};
-        drawLine(xE, yE, xF, yF, color);
-        drawLine(xF, yF, xG, yG, color);
-        drawLine(xG, yG, xH, yH, color);
-        drawLine(xH, yH, xE, yE, color);
+        drawLine(xE, yE, xF, yF, color2);
+        drawLine(xF, yF, xG, yG, color2);
+        drawLine(xG, yG, xH, yH, color2);
+        drawLine(xH, yH, xE, yE, color2);
         graphics.fillPolygon(xPoints3, yPoints3, 4);
 
         int[] xPoints4 = {xA, xB, xF, xE};
         int[] yPoints4 = {yA, yB, yF, yE};
-        drawLine(xA, yA, xB, yB, color);
-        drawLine(xB, yB, xF, yF, color);
-        drawLine(xF, yF, xE, yE, color);
-        drawLine(xE, yE, xA, yA, color);
+        drawLine(xA, yA, xB, yB, color2);
+        drawLine(xB, yB, xF, yF, color2);
+        drawLine(xF, yF, xE, yE, color2);
+        drawLine(xE, yE, xA, yA, color2);
         graphics.fillPolygon(xPoints4, yPoints4, 4);
 
         int[] xPoints5 = {xD, xC, xG, xH};
         int[] yPoints5 = {yD, yC, yG, yH};
-        drawLine(xD, yD, xC, yC, color);
-        drawLine(xC, yC, xG, yG, color);
-        drawLine(xG, yG, xH, yH, color);
-        drawLine(xH, yH, xD, yD, color);
+        drawLine(xD, yD, xC, yC, color2);
+        drawLine(xC, yC, xG, yG, color2);
+        drawLine(xG, yG, xH, yH, color2);
+        drawLine(xH, yH, xD, yD, color2);
         graphics.fillPolygon(xPoints5, yPoints5, 4);
     }
     public void drawCubeVPoint (double[][] coords, Color color) {
