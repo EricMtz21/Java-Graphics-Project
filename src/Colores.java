@@ -24,4 +24,6 @@ public class Colores {
     static Color piedra = new Color(176, 161, 202);
     static Color picoPollo = new Color(235, 110, 98);
     static Color pataPollo = new Color(220, 100, 98);
+    static Color colorCarroAzul = new Color(4, 166, 230);
+    static Color colorCarroNaranja = new Color(243, 98, 51);
 }
