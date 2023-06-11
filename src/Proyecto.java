@@ -56,7 +56,6 @@ public class Proyecto extends JFrame implements Runnable{
                             {-215, -215, -140, -140},
                             {1, 1, 1, 1}
                     };
-
                 }
 
                 if (Coordenadas.pastoOscuro1[1][0] == 20) {
@@ -116,6 +115,8 @@ public class Proyecto extends JFrame implements Runnable{
 
     public void paintPath () {
         drawRectangle(Coordenadas.calle1, Colores.calleCentro);
+        //drawRectangle(Coordenadas.calle1Ralla1, Colores.calleLinea);
+
         drawRectangle(Coordenadas.pastoBorde1, Colores.pastoBorde);
         drawRectangle(Coordenadas.pastoOscuro1, Colores.pastoOscuro);
         drawRectangle(Coordenadas.pastoClaro1, Colores.pastoClaro);
@@ -138,10 +139,17 @@ public class Proyecto extends JFrame implements Runnable{
         drawCube(Coordenadas.hojasArbol3, Colores.hojasFrente, Colores.hojasFrente);
         drawCube(Coordenadas.troncoArbol4, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
         drawCube(Coordenadas.hojasArbol4, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol5, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol5, Colores.hojasFrente, Colores.hojasFrente);
+        drawCube(Coordenadas.troncoArbol6, Colores.troncoArbolFrente, Colores.troncoArbolFrente);
+        drawCube(Coordenadas.hojasArbol6, Colores.hojasFrente, Colores.hojasFrente);
     }
 
     public void translatePath () {
         translate(Coordenadas.calle1 , 0, yDistance, 0);
+        //translate(Coordenadas.calle1Ralla1 , 0, yDistance, 0);
+
+
         translate(Coordenadas.pastoBorde1 , 0, yDistance, 0);
         translate(Coordenadas.pastoOscuro1, 0, yDistance, 0);
         translate(Coordenadas.pastoClaro1, 0, yDistance, 0);
@@ -164,45 +172,121 @@ public class Proyecto extends JFrame implements Runnable{
         translate(Coordenadas.hojasArbol3, 0, yDistance, 0);
         translate(Coordenadas.troncoArbol4, 0, yDistance, 0);
         translate(Coordenadas.hojasArbol4, 0, yDistance, 0);
+        translate(Coordenadas.troncoArbol5, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol5, 0, yDistance, 0);
+        translate(Coordenadas.troncoArbol6, 0, yDistance, 0);
+        translate(Coordenadas.hojasArbol6, 0, yDistance, 0);
     }
 
     public void paintLogs () {
 
         drawCube(Coordenadas.bordeTroncoIzq1, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoIzq1, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoIzq1, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoIzq1, 10);
 
         drawCube(Coordenadas.tronco1, Colores.troncoCuerpo, Colores.troncoCuerpo);
-        translate(Coordenadas.tronco1, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.tronco1, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.tronco1, 10);
 
         drawCube(Coordenadas.bordeTroncoDer1, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoDer1, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoDer1, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoDer1, 10);
 
         drawCube(Coordenadas.bordeTroncoIzq2, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoIzq2, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoIzq2, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoIzq2, 10);
 
         drawCube(Coordenadas.tronco2, Colores.troncoCuerpo, Colores.troncoCuerpo);
-        translate(Coordenadas.tronco2, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.tronco2, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.tronco2, 10);
 
         drawCube(Coordenadas.bordeTroncoDer2, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoDer2, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoDer2, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoDer2, 10);
 
         drawCube(Coordenadas.bordeTroncoIzq3, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoIzq3, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoIzq3, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoIzq3, 10);
 
         drawCube(Coordenadas.tronco3, Colores.troncoCuerpo, Colores.troncoCuerpo);
-        translate(Coordenadas.tronco3, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.tronco3, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.tronco3, 10);
 
         drawCube(Coordenadas.bordeTroncoDer3, Colores.troncoBorde, Colores.troncoBorde);
-        translate(Coordenadas.bordeTroncoDer3, 1, (int) (yDistance * 1.5), 0);
+        translate(Coordenadas.bordeTroncoDer3, 1, (int) (yDistance), 0);
         rotateXFromCenter(Coordenadas.bordeTroncoDer3, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq4, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq4, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq4, 10);
+
+        drawCube(Coordenadas.tronco4, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco4, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco4, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer4, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer4, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer4, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq5, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq5, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq5, 10);
+
+        drawCube(Coordenadas.tronco5, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco5, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco5, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer5, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer5, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer5, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq6, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq6, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq6, 10);
+
+        drawCube(Coordenadas.tronco6, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco6, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco6, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer6, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer6, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer6, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq7, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq7, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq7, 10);
+
+        drawCube(Coordenadas.tronco7, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco7, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco7, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer7, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer7, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer7, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq8, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq8, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq8, 10);
+
+        drawCube(Coordenadas.tronco8, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco8, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco8, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer8, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer8, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer8, 10);
+
+        drawCube(Coordenadas.bordeTroncoIzq9, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoIzq9, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoIzq9, 10);
+
+        drawCube(Coordenadas.tronco9, Colores.troncoCuerpo, Colores.troncoCuerpo);
+        translate(Coordenadas.tronco9, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.tronco9, 10);
+
+        drawCube(Coordenadas.bordeTroncoDer9, Colores.troncoBorde, Colores.troncoBorde);
+        translate(Coordenadas.bordeTroncoDer9, 1, (int) (yDistance), 0);
+        rotateXFromCenter(Coordenadas.bordeTroncoDer9, 10);
     }
 
     public void paint(Graphics g) {
@@ -250,29 +334,19 @@ public class Proyecto extends JFrame implements Runnable{
     }
     private void rotateXFromCenter(double[][] coords, double angle) {
         // Paso 1: Calcular el centro de la figura
-        double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-        double minZ = Double.MAX_VALUE;
-        double maxX = Double.MIN_VALUE;
-        double maxY = Double.MIN_VALUE;
-        double maxZ = Double.MIN_VALUE;
+        double centerX = 0.0;
+        double centerY = 0.0;
+        double centerZ = 0.0;
 
         for (int i = 0; i < coords[0].length; i++) {
-            double x = coords[0][i];
-            double y = coords[1][i];
-            double z = coords[2][i];
-
-            minX = Math.min(minX, x);
-            minY = Math.min(minY, y);
-            minZ = Math.min(minZ, z);
-            maxX = Math.max(maxX, x);
-            maxY = Math.max(maxY, y);
-            maxZ = Math.max(maxZ, z);
+            centerX += coords[0][i];
+            centerY += coords[1][i];
+            centerZ += coords[2][i];
         }
 
-        double centerX = (minX + maxX) / 2.0;
-        double centerY = (minY + maxY) / 2.0;
-        double centerZ = (minZ + maxZ) / 2.0;
+        centerX /= coords[0].length;
+        centerY /= coords[0].length;
+        centerZ /= coords[0].length;
 
         // Paso 2: Restar el centro a cada coordenada
         for (int i = 0; i < coords[0].length; i++) {
@@ -285,7 +359,7 @@ public class Proyecto extends JFrame implements Runnable{
         double cosAngle = Math.cos(Math.toRadians(angle));
         double sinAngle = Math.sin(Math.toRadians(angle));
 
-        for (int i = 0; i < coords[1].length; i++) {
+        for (int i = 0; i < coords[0].length; i++) {
             double y = coords[1][i];
             double z = coords[2][i];
 
